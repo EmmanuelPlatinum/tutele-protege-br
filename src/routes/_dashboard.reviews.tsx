@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { PageHeader } from "@/components/app-header";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/reviews")({
+export const Route = createFileRoute("/_dashboard/reviews")({
   head: () => ({
     meta: [
       { title: "Reviews — LocalPilot" },

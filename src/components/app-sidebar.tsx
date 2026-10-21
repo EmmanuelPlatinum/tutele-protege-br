@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Appointments", url: "/appointments", icon: CalendarDays },
   { title: "Messages", url: "/messages", icon: MessageSquare },
   { title: "Reviews", url: "/reviews", icon: Star },
@@ -25,7 +25,7 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 py-3">
+        <Link to="/" className="flex items-center gap-2 px-2 py-3">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
             <Zap className="size-4" />
           </div>

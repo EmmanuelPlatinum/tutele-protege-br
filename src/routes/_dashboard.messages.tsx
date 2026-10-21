@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { PageHeader } from "@/components/app-header";
 
-export const Route = createFileRoute("/messages")({
+export const Route = createFileRoute("/_dashboard/messages")({
   head: () => ({
     meta: [
       { title: "Messages — LocalPilot" },

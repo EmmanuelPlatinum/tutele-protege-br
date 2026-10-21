@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { PageHeader } from "@/components/app-header";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_dashboard/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard — LocalPilot" },
