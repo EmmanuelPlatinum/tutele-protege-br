@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { PageHeader } from "@/components/app-header";
 
-export const Route = createFileRoute("/appointments")({
+export const Route = createFileRoute("/_dashboard/appointments")({
   head: () => ({
     meta: [
       { title: "Appointments — LocalPilot" },

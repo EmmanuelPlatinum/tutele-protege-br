@@ -10,74 +10,105 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppointmentsRouteImport } from './routes/appointments'
-import { Route as MessagesRouteImport } from './routes/messages'
-import { Route as ReviewsRouteImport } from './routes/reviews'
-import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as DashboardRouteImport } from './routes/_dashboard'
+import { Route as DashboardAppointmentsRouteImport } from './routes/_dashboard.appointments'
+import { Route as DashboardDashboardRouteImport } from './routes/_dashboard.dashboard'
+import { Route as DashboardMessagesRouteImport } from './routes/_dashboard.messages'
+import { Route as DashboardReviewsRouteImport } from './routes/_dashboard.reviews'
+import { Route as DashboardSettingsRouteImport } from './routes/_dashboard.settings'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppointmentsRoute = AppointmentsRouteImport.update({
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/_dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardAppointmentsRoute = DashboardAppointmentsRouteImport.update({
   id: '/appointments',
   path: '/appointments',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => DashboardRoute,
 } as any)
-const MessagesRoute = MessagesRouteImport.update({
+const DashboardDashboardRoute = DashboardDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardMessagesRoute = DashboardMessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => DashboardRoute,
 } as any)
-const ReviewsRoute = ReviewsRouteImport.update({
+const DashboardReviewsRoute = DashboardReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => DashboardRoute,
 } as any)
-const SettingsRoute = SettingsRouteImport.update({
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => DashboardRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/appointments': typeof AppointmentsRoute
-  '/messages': typeof MessagesRoute
-  '/reviews': typeof ReviewsRoute
-  '/settings': typeof SettingsRoute
+  '/appointments': typeof DashboardAppointmentsRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/messages': typeof DashboardMessagesRoute
+  '/reviews': typeof DashboardReviewsRoute
+  '/settings': typeof DashboardSettingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/appointments': typeof AppointmentsRoute
-  '/messages': typeof MessagesRoute
-  '/reviews': typeof ReviewsRoute
-  '/settings': typeof SettingsRoute
+  '/appointments': typeof DashboardAppointmentsRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/messages': typeof DashboardMessagesRoute
+  '/reviews': typeof DashboardReviewsRoute
+  '/settings': typeof DashboardSettingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/appointments': typeof AppointmentsRoute
-  '/messages': typeof MessagesRoute
-  '/reviews': typeof ReviewsRoute
-  '/settings': typeof SettingsRoute
+  '/_dashboard': typeof DashboardRouteWithChildren
+  '/_dashboard/appointments': typeof DashboardAppointmentsRoute
+  '/_dashboard/dashboard': typeof DashboardDashboardRoute
+  '/_dashboard/messages': typeof DashboardMessagesRoute
+  '/_dashboard/reviews': typeof DashboardReviewsRoute
+  '/_dashboard/settings': typeof DashboardSettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/appointments' | '/messages' | '/reviews' | '/settings'
+  fullPaths:
+    | '/'
+    | '/appointments'
+    | '/dashboard'
+    | '/messages'
+    | '/reviews'
+    | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/appointments' | '/messages' | '/reviews' | '/settings'
+  to:
+    | '/'
+    | '/appointments'
+    | '/dashboard'
+    | '/messages'
+    | '/reviews'
+    | '/settings'
   id:
-    '__root__' | '/' | '/appointments' | '/messages' | '/reviews' | '/settings'
+    | '__root__'
+    | '/'
+    | '/_dashboard'
+    | '/_dashboard/appointments'
+    | '/_dashboard/dashboard'
+    | '/_dashboard/messages'
+    | '/_dashboard/reviews'
+    | '/_dashboard/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppointmentsRoute: typeof AppointmentsRoute
-  MessagesRoute: typeof MessagesRoute
-  ReviewsRoute: typeof ReviewsRoute
-  SettingsRoute: typeof SettingsRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -89,43 +120,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/appointments': {
-      id: '/appointments'
+    '/_dashboard': {
+      id: '/_dashboard'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/appointments': {
+      id: '/_dashboard/appointments'
       path: '/appointments'
       fullPath: '/appointments'
-      preLoaderRoute: typeof AppointmentsRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof DashboardAppointmentsRouteImport
+      parentRoute: typeof DashboardRoute
     }
-    '/messages': {
-      id: '/messages'
+    '/_dashboard/dashboard': {
+      id: '/_dashboard/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardDashboardRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/messages': {
+      id: '/_dashboard/messages'
       path: '/messages'
       fullPath: '/messages'
-      preLoaderRoute: typeof MessagesRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof DashboardMessagesRouteImport
+      parentRoute: typeof DashboardRoute
     }
-    '/reviews': {
-      id: '/reviews'
+    '/_dashboard/reviews': {
+      id: '/_dashboard/reviews'
       path: '/reviews'
       fullPath: '/reviews'
-      preLoaderRoute: typeof ReviewsRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof DashboardReviewsRouteImport
+      parentRoute: typeof DashboardRoute
     }
-    '/settings': {
-      id: '/settings'
+    '/_dashboard/settings': {
+      id: '/_dashboard/settings'
       path: '/settings'
       fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
     }
   }
 }
 
+interface DashboardRouteChildren {
+  DashboardAppointmentsRoute: typeof DashboardAppointmentsRoute
+  DashboardDashboardRoute: typeof DashboardDashboardRoute
+  DashboardMessagesRoute: typeof DashboardMessagesRoute
+  DashboardReviewsRoute: typeof DashboardReviewsRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardAppointmentsRoute: DashboardAppointmentsRoute,
+  DashboardDashboardRoute: DashboardDashboardRoute,
+  DashboardMessagesRoute: DashboardMessagesRoute,
+  DashboardReviewsRoute: DashboardReviewsRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppointmentsRoute: AppointmentsRoute,
-  MessagesRoute: MessagesRoute,
-  ReviewsRoute: ReviewsRoute,
-  SettingsRoute: SettingsRoute,
+  DashboardRoute: DashboardRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

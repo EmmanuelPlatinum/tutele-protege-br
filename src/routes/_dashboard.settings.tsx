@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Switch } from "@/components/ui/switch";
 import { PageHeader } from "@/components/app-header";
 
-export const Route = createFileRoute("/settings")({
+export const Route = createFileRoute("/_dashboard/settings")({
   head: () => ({
     meta: [
       { title: "Settings — LocalPilot" },

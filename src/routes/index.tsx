@@ -1,116 +1,127 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { CalendarCheck, Star, MessageSquare, DollarSign, TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
-import { PageHeader } from "@/components/app-header";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, CalendarDays, MessageSquare, Star, Zap, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Dashboard — LocalPilot" },
-      { name: "description", content: "Your business at a glance: appointments, reviews, messages and revenue." },
-      { property: "og:title", content: "Dashboard — LocalPilot" },
-      { property: "og:description", content: "Your business at a glance: appointments, reviews, messages and revenue." },
+      { title: "LocalPilot — Automate your local business" },
+      { name: "description", content: "Appointments, Google reviews and customer messaging on autopilot for local businesses." },
+      { property: "og:title", content: "LocalPilot — Automate your local business" },
+      { property: "og:description", content: "Appointments, Google reviews and customer messaging on autopilot for local businesses." },
     ],
   }),
-  component: Dashboard,
+  component: Landing,
 });
 
-const kpis = [
-  { label: "Appointments Today", value: "12", delta: "+3 vs yesterday", icon: CalendarCheck },
-  { label: "New Reviews", value: "8", delta: "4.8 avg rating", icon: Star },
-  { label: "Unread Messages", value: "5", delta: "2 need reply", icon: MessageSquare },
-  { label: "Total Revenue", value: "R$ 4.280", delta: "+12% this week", icon: DollarSign },
+const features = [
+  { icon: CalendarDays, title: "Centralized Appointments", text: "Every booking from every channel in one calendar, with automatic reminders that cut no-shows." },
+  { icon: Star, title: "Google Business Management", text: "Track new reviews in real time and reply in one click to keep your rating shining." },
+  { icon: MessageSquare, title: "Automated Messaging", text: "Confirmations, follow-ups and answers to common questions — sent while you work." },
 ];
 
-const data = [
-  { day: "Mon", engagement: 120 },
-  { day: "Tue", engagement: 158 },
-  { day: "Wed", engagement: 142 },
-  { day: "Thu", engagement: 189 },
-  { day: "Fri", engagement: 230 },
-  { day: "Sat", engagement: 264 },
-  { day: "Sun", engagement: 198 },
-];
-const config = { engagement: { label: "Engagement", color: "var(--chart-1)" } } satisfies ChartConfig;
-
-const activity = [
-  { icon: CalendarCheck, text: "João confirmed his appointment", time: "5 min ago" },
-  { icon: Star, text: "New 5-star review from Maria", time: "22 min ago" },
-  { icon: MessageSquare, text: "Pedro sent a message about pricing", time: "1 h ago" },
-  { icon: CalendarCheck, text: "Carla booked a haircut for Friday", time: "2 h ago" },
-  { icon: Star, text: "New 4-star review from Lucas", time: "4 h ago" },
-];
-
-function Dashboard() {
+function Logo() {
   return (
-    <>
-      <PageHeader title="Good afternoon, Ana" subtitle="Here's what's happening with your business today." />
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {kpis.map((k) => (
-          <Card key={k.label} className="shadow-card">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-muted-foreground">{k.label}</p>
-                <div className="flex size-9 items-center justify-center rounded-lg bg-accent text-accent-foreground">
-                  <k.icon className="size-4" />
-                </div>
+    <Link to="/" className="flex items-center gap-2 font-semibold">
+      <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+        <Zap className="size-4" />
+      </span>
+      LocalPilot
+    </Link>
+  );
+}
+
+function DashboardMock() {
+  const bars = [40, 62, 55, 78, 92, 100, 74];
+  return (
+    <div className="rounded-2xl border bg-card p-2 shadow-glow">
+      <div className="flex items-center gap-1.5 px-3 py-2">
+        <span className="size-2.5 rounded-full bg-destructive/60" />
+        <span className="size-2.5 rounded-full bg-warning/60" />
+        <span className="size-2.5 rounded-full bg-success/60" />
+      </div>
+      <div className="grid gap-3 rounded-xl bg-muted/60 p-4 md:grid-cols-[160px_1fr]">
+        <div className="hidden space-y-2 rounded-lg bg-card p-3 md:block">
+          {["Dashboard", "Appointments", "Messages", "Reviews"].map((n, i) => (
+            <div key={n} className={i === 0 ? "rounded-md bg-accent px-2 py-1.5 text-xs font-medium text-accent-foreground" : "px-2 py-1.5 text-xs text-muted-foreground"}>{n}</div>
+          ))}
+        </div>
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {[["Today", "12"], ["Reviews", "8"], ["Unread", "5"], ["Revenue", "R$ 4.2k"]].map(([l, v]) => (
+              <div key={l} className="rounded-lg bg-card p-3">
+                <p className="text-[11px] text-muted-foreground">{l}</p>
+                <p className="text-lg font-semibold">{v}</p>
               </div>
-              <p className="mt-3 text-3xl font-semibold tracking-tight">{k.value}</p>
-              <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-                <TrendingUp className="size-3 text-success" /> {k.delta}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
+            ))}
+          </div>
+          <div className="flex h-40 items-end gap-2 rounded-lg bg-card p-4">
+            {bars.map((h, i) => (
+              <div key={i} className="flex-1 rounded-t-md bg-primary/80" style={{ height: `${h}%` }} />
+            ))}
+          </div>
+        </div>
       </div>
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <Card className="shadow-card lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Customer Engagement</CardTitle>
-            <CardDescription>Bookings, messages and reviews — last 7 days</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={config} className="h-[280px] w-full">
-              <AreaChart data={data} margin={{ left: -20, right: 8 }}>
-                <defs>
-                  <linearGradient id="fillEng" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--color-engagement)" stopOpacity={0.25} />
-                    <stop offset="100%" stopColor="var(--color-engagement)" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                <XAxis dataKey="day" tickLine={false} axisLine={false} tickMargin={8} />
-                <YAxis tickLine={false} axisLine={false} />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Area type="monotone" dataKey="engagement" stroke="var(--color-engagement)" strokeWidth={2.5} fill="url(#fillEng)" />
-              </AreaChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-        <Card className="shadow-card">
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Latest events across your channels</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-4">
-              {activity.map((a, i) => (
-                <li key={i} className="flex gap-3">
-                  <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-                    <a.icon className="size-4" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium leading-snug">{a.text}</p>
-                    <p className="text-xs text-muted-foreground">{a.time}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      </div>
-    </>
+    </div>
+  );
+}
+
+function Landing() {
+  return (
+    <div className="min-h-screen bg-background">
+      <header className="sticky top-0 z-20 border-b bg-background/80 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
+          <Logo />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button asChild variant="ghost" className="hidden sm:inline-flex"><Link to="/dashboard">Login</Link></Button>
+            <Button asChild><Link to="/dashboard">Go to Dashboard</Link></Button>
+          </div>
+        </div>
+      </header>
+
+      <section className="mx-auto max-w-6xl px-4 pb-16 pt-20 text-center md:px-6 md:pt-28">
+        <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
+          <span className="size-1.5 rounded-full bg-primary" /> Built for salons, clinics, shops & studios
+        </span>
+        <h1 className="mx-auto mt-6 max-w-4xl text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+          Automate Your Local Business & Grow Your <span className="text-primary">Online Reputation</span>
+        </h1>
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+          LocalPilot handles bookings, reminders, customer messages and Google reviews — so you can focus on your clients.
+        </p>
+        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <Button asChild size="lg" className="h-12 px-6 text-base"><Link to="/dashboard">Start Free Trial <ArrowRight /></Link></Button>
+          <p className="flex items-center gap-1.5 text-sm text-muted-foreground"><Check className="size-4 text-success" /> 14 days free · No card required</p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-12 md:px-6">
+        <div className="grid gap-6 md:grid-cols-3">
+          {features.map((f) => (
+            <Card key={f.title} className="shadow-card">
+              <CardContent className="p-6">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-accent text-accent-foreground"><f.icon className="size-5" /></div>
+                <h3 className="mt-5 text-lg font-semibold">{f.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.text}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-4 py-16 md:px-6">
+        <DashboardMock />
+      </section>
+
+      <footer className="border-t">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-8 text-sm text-muted-foreground sm:flex-row md:px-6">
+          <Logo />
+          <p>© {new Date().getFullYear()} LocalPilot. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
   );
 }
