@@ -9,123 +9,129 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppointmentsRouteImport } from './routes/appointments'
-import { Route as MessagesRouteImport } from './routes/messages'
-import { Route as ReviewsRouteImport } from './routes/reviews'
-import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as DashboardAppointmentsRouteImport } from './routes/_dashboard.appointments'
+import { Route as DashboardDashboardRouteImport } from './routes/_dashboard.dashboard'
+import { Route as DashboardMessagesRouteImport } from './routes/_dashboard.messages'
+import { Route as DashboardReviewsRouteImport } from './routes/_dashboard.reviews'
+import { Route as DashboardSettingsRouteImport } from './routes/_dashboard.settings'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppointmentsRoute = AppointmentsRouteImport.update({
-  id: '/appointments',
+const DashboardAppointmentsRoute = DashboardAppointmentsRouteImport.update({
+  id: '/_dashboard/appointments',
   path: '/appointments',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MessagesRoute = MessagesRouteImport.update({
-  id: '/messages',
+const DashboardDashboardRoute = DashboardDashboardRouteImport.update({
+  id: '/_dashboard/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardMessagesRoute = DashboardMessagesRouteImport.update({
+  id: '/_dashboard/messages',
   path: '/messages',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ReviewsRoute = ReviewsRouteImport.update({
-  id: '/reviews',
+const DashboardReviewsRoute = DashboardReviewsRouteImport.update({
+  id: '/_dashboard/reviews',
   path: '/reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/_dashboard/settings',
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/appointments': typeof AppointmentsRoute
-  '/messages': typeof MessagesRoute
-  '/reviews': typeof ReviewsRoute
-  '/settings': typeof SettingsRoute
+  '/appointments': typeof DashboardAppointmentsRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/messages': typeof DashboardMessagesRoute
+  '/reviews': typeof DashboardReviewsRoute
+  '/settings': typeof DashboardSettingsRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/appointments': typeof AppointmentsRoute
-  '/messages': typeof MessagesRoute
-  '/reviews': typeof ReviewsRoute
-  '/settings': typeof SettingsRoute
+  '/appointments': typeof DashboardAppointmentsRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/messages': typeof DashboardMessagesRoute
+  '/reviews': typeof DashboardReviewsRoute
+  '/settings': typeof DashboardSettingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/appointments': typeof AppointmentsRoute
-  '/messages': typeof MessagesRoute
-  '/reviews': typeof ReviewsRoute
-  '/settings': typeof SettingsRoute
+  '/_dashboard/appointments': typeof DashboardAppointmentsRoute
+  '/_dashboard/dashboard': typeof DashboardDashboardRoute
+  '/_dashboard/messages': typeof DashboardMessagesRoute
+  '/_dashboard/reviews': typeof DashboardReviewsRoute
+  '/_dashboard/settings': typeof DashboardSettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/appointments' | '/messages' | '/reviews' | '/settings'
+  fullPaths:
+    '/appointments' | '/dashboard' | '/messages' | '/reviews' | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/appointments' | '/messages' | '/reviews' | '/settings'
+  to: '/appointments' | '/dashboard' | '/messages' | '/reviews' | '/settings'
   id:
-    '__root__' | '/' | '/appointments' | '/messages' | '/reviews' | '/settings'
+    | '__root__'
+    | '/_dashboard/appointments'
+    | '/_dashboard/dashboard'
+    | '/_dashboard/messages'
+    | '/_dashboard/reviews'
+    | '/_dashboard/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AppointmentsRoute: typeof AppointmentsRoute
-  MessagesRoute: typeof MessagesRoute
-  ReviewsRoute: typeof ReviewsRoute
-  SettingsRoute: typeof SettingsRoute
+  DashboardAppointmentsRoute: typeof DashboardAppointmentsRoute
+  DashboardDashboardRoute: typeof DashboardDashboardRoute
+  DashboardMessagesRoute: typeof DashboardMessagesRoute
+  DashboardReviewsRoute: typeof DashboardReviewsRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/appointments': {
-      id: '/appointments'
+    '/_dashboard/appointments': {
+      id: '/_dashboard/appointments'
       path: '/appointments'
       fullPath: '/appointments'
-      preLoaderRoute: typeof AppointmentsRouteImport
+      preLoaderRoute: typeof DashboardAppointmentsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/messages': {
-      id: '/messages'
+    '/_dashboard/dashboard': {
+      id: '/_dashboard/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/messages': {
+      id: '/_dashboard/messages'
       path: '/messages'
       fullPath: '/messages'
-      preLoaderRoute: typeof MessagesRouteImport
+      preLoaderRoute: typeof DashboardMessagesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/reviews': {
-      id: '/reviews'
+    '/_dashboard/reviews': {
+      id: '/_dashboard/reviews'
       path: '/reviews'
       fullPath: '/reviews'
-      preLoaderRoute: typeof ReviewsRouteImport
+      preLoaderRoute: typeof DashboardReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/settings': {
-      id: '/settings'
+    '/_dashboard/settings': {
+      id: '/_dashboard/settings'
       path: '/settings'
       fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
+      preLoaderRoute: typeof DashboardSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AppointmentsRoute: AppointmentsRoute,
-  MessagesRoute: MessagesRoute,
-  ReviewsRoute: ReviewsRoute,
-  SettingsRoute: SettingsRoute,
+  DashboardAppointmentsRoute: DashboardAppointmentsRoute,
+  DashboardDashboardRoute: DashboardDashboardRoute,
+  DashboardMessagesRoute: DashboardMessagesRoute,
+  DashboardReviewsRoute: DashboardReviewsRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

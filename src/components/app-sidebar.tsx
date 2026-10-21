@@ -32,7 +32,7 @@ export function AppSidebar() {
           <span className="truncate text-base font-semibold text-sidebar-accent-foreground group-data-[collapsible=icon]:hidden">
             LocalPilot
           </span>
-        </div>
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

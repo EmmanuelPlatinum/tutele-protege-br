@@ -1,4 +1,5 @@
 import { Bell, Search } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ export function AppHeader() {
         <Input placeholder="Search clients, appointments..." className="bg-muted pl-9 border-transparent" />
       </div>
       <div className="ml-auto flex items-center gap-2">
+        <ThemeToggle />
         <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
           <Bell className="size-5" />
           <span className="absolute right-2 top-2 size-2 rounded-full bg-primary" />
