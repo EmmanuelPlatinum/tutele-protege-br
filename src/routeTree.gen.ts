@@ -9,39 +9,51 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardRouteImport } from './routes/_dashboard'
 import { Route as DashboardAppointmentsRouteImport } from './routes/_dashboard.appointments'
 import { Route as DashboardDashboardRouteImport } from './routes/_dashboard.dashboard'
 import { Route as DashboardMessagesRouteImport } from './routes/_dashboard.messages'
 import { Route as DashboardReviewsRouteImport } from './routes/_dashboard.reviews'
 import { Route as DashboardSettingsRouteImport } from './routes/_dashboard.settings'
 
-const DashboardAppointmentsRoute = DashboardAppointmentsRouteImport.update({
-  id: '/_dashboard/appointments',
-  path: '/appointments',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/_dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardAppointmentsRoute = DashboardAppointmentsRouteImport.update({
+  id: '/appointments',
+  path: '/appointments',
+  getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardDashboardRoute = DashboardDashboardRouteImport.update({
-  id: '/_dashboard/dashboard',
+  id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardMessagesRoute = DashboardMessagesRouteImport.update({
-  id: '/_dashboard/messages',
+  id: '/messages',
   path: '/messages',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardReviewsRoute = DashboardReviewsRouteImport.update({
-  id: '/_dashboard/reviews',
+  id: '/reviews',
   path: '/reviews',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
-  id: '/_dashboard/settings',
+  id: '/settings',
   path: '/settings',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => DashboardRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/appointments': typeof DashboardAppointmentsRoute
   '/dashboard': typeof DashboardDashboardRoute
   '/messages': typeof DashboardMessagesRoute
@@ -49,6 +61,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof DashboardSettingsRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/appointments': typeof DashboardAppointmentsRoute
   '/dashboard': typeof DashboardDashboardRoute
   '/messages': typeof DashboardMessagesRoute
@@ -57,6 +70,8 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_dashboard': typeof DashboardRouteWithChildren
   '/_dashboard/appointments': typeof DashboardAppointmentsRoute
   '/_dashboard/dashboard': typeof DashboardDashboardRoute
   '/_dashboard/messages': typeof DashboardMessagesRoute
@@ -66,11 +81,24 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/appointments' | '/dashboard' | '/messages' | '/reviews' | '/settings'
+    | '/'
+    | '/appointments'
+    | '/dashboard'
+    | '/messages'
+    | '/reviews'
+    | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/appointments' | '/dashboard' | '/messages' | '/reviews' | '/settings'
+  to:
+    | '/'
+    | '/appointments'
+    | '/dashboard'
+    | '/messages'
+    | '/reviews'
+    | '/settings'
   id:
     | '__root__'
+    | '/'
+    | '/_dashboard'
     | '/_dashboard/appointments'
     | '/_dashboard/dashboard'
     | '/_dashboard/messages'
@@ -79,6 +107,65 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard': {
+      id: '/_dashboard'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/appointments': {
+      id: '/_dashboard/appointments'
+      path: '/appointments'
+      fullPath: '/appointments'
+      preLoaderRoute: typeof DashboardAppointmentsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/dashboard': {
+      id: '/_dashboard/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardDashboardRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/messages': {
+      id: '/_dashboard/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof DashboardMessagesRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/reviews': {
+      id: '/_dashboard/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof DashboardReviewsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/settings': {
+      id: '/_dashboard/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+  }
+}
+
+interface DashboardRouteChildren {
   DashboardAppointmentsRoute: typeof DashboardAppointmentsRoute
   DashboardDashboardRoute: typeof DashboardDashboardRoute
   DashboardMessagesRoute: typeof DashboardMessagesRoute
@@ -86,52 +173,21 @@ export interface RootRouteChildren {
   DashboardSettingsRoute: typeof DashboardSettingsRoute
 }
 
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/_dashboard/appointments': {
-      id: '/_dashboard/appointments'
-      path: '/appointments'
-      fullPath: '/appointments'
-      preLoaderRoute: typeof DashboardAppointmentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_dashboard/dashboard': {
-      id: '/_dashboard/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_dashboard/messages': {
-      id: '/_dashboard/messages'
-      path: '/messages'
-      fullPath: '/messages'
-      preLoaderRoute: typeof DashboardMessagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_dashboard/reviews': {
-      id: '/_dashboard/reviews'
-      path: '/reviews'
-      fullPath: '/reviews'
-      preLoaderRoute: typeof DashboardReviewsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_dashboard/settings': {
-      id: '/_dashboard/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof DashboardSettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-  }
-}
-
-const rootRouteChildren: RootRouteChildren = {
+const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAppointmentsRoute: DashboardAppointmentsRoute,
   DashboardDashboardRoute: DashboardDashboardRoute,
   DashboardMessagesRoute: DashboardMessagesRoute,
   DashboardReviewsRoute: DashboardReviewsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
