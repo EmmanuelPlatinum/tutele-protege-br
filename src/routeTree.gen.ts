@@ -11,11 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/_dashboard'
-import { Route as DashboardAppointmentsRouteImport } from './routes/_dashboard.appointments'
+import { Route as DashboardCasesRouteImport } from './routes/_dashboard.cases'
 import { Route as DashboardDashboardRouteImport } from './routes/_dashboard.dashboard'
-import { Route as DashboardMessagesRouteImport } from './routes/_dashboard.messages'
-import { Route as DashboardReviewsRouteImport } from './routes/_dashboard.reviews'
+import { Route as DashboardReportsRouteImport } from './routes/_dashboard.reports'
 import { Route as DashboardSettingsRouteImport } from './routes/_dashboard.settings'
+import { Route as DashboardShiftsRouteImport } from './routes/_dashboard.shifts'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -26,9 +26,9 @@ const DashboardRoute = DashboardRouteImport.update({
   id: '/_dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardAppointmentsRoute = DashboardAppointmentsRouteImport.update({
-  id: '/appointments',
-  path: '/appointments',
+const DashboardCasesRoute = DashboardCasesRouteImport.update({
+  id: '/cases',
+  path: '/cases',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardDashboardRoute = DashboardDashboardRouteImport.update({
@@ -36,14 +36,9 @@ const DashboardDashboardRoute = DashboardDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => DashboardRoute,
 } as any)
-const DashboardMessagesRoute = DashboardMessagesRouteImport.update({
-  id: '/messages',
-  path: '/messages',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardReviewsRoute = DashboardReviewsRouteImport.update({
-  id: '/reviews',
-  path: '/reviews',
+const DashboardReportsRoute = DashboardReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
@@ -51,59 +46,53 @@ const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardShiftsRoute = DashboardShiftsRouteImport.update({
+  id: '/shifts',
+  path: '/shifts',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/appointments': typeof DashboardAppointmentsRoute
+  '/cases': typeof DashboardCasesRoute
   '/dashboard': typeof DashboardDashboardRoute
-  '/messages': typeof DashboardMessagesRoute
-  '/reviews': typeof DashboardReviewsRoute
+  '/reports': typeof DashboardReportsRoute
   '/settings': typeof DashboardSettingsRoute
+  '/shifts': typeof DashboardShiftsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/appointments': typeof DashboardAppointmentsRoute
+  '/cases': typeof DashboardCasesRoute
   '/dashboard': typeof DashboardDashboardRoute
-  '/messages': typeof DashboardMessagesRoute
-  '/reviews': typeof DashboardReviewsRoute
+  '/reports': typeof DashboardReportsRoute
   '/settings': typeof DashboardSettingsRoute
+  '/shifts': typeof DashboardShiftsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_dashboard': typeof DashboardRouteWithChildren
-  '/_dashboard/appointments': typeof DashboardAppointmentsRoute
+  '/_dashboard/cases': typeof DashboardCasesRoute
   '/_dashboard/dashboard': typeof DashboardDashboardRoute
-  '/_dashboard/messages': typeof DashboardMessagesRoute
-  '/_dashboard/reviews': typeof DashboardReviewsRoute
+  '/_dashboard/reports': typeof DashboardReportsRoute
   '/_dashboard/settings': typeof DashboardSettingsRoute
+  '/_dashboard/shifts': typeof DashboardShiftsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/appointments'
-    | '/dashboard'
-    | '/messages'
-    | '/reviews'
-    | '/settings'
+    '/' | '/cases' | '/dashboard' | '/reports' | '/settings' | '/shifts'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/appointments'
-    | '/dashboard'
-    | '/messages'
-    | '/reviews'
-    | '/settings'
+  to: '/' | '/cases' | '/dashboard' | '/reports' | '/settings' | '/shifts'
   id:
     | '__root__'
     | '/'
     | '/_dashboard'
-    | '/_dashboard/appointments'
+    | '/_dashboard/cases'
     | '/_dashboard/dashboard'
-    | '/_dashboard/messages'
-    | '/_dashboard/reviews'
+    | '/_dashboard/reports'
     | '/_dashboard/settings'
+    | '/_dashboard/shifts'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -127,11 +116,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_dashboard/appointments': {
-      id: '/_dashboard/appointments'
-      path: '/appointments'
-      fullPath: '/appointments'
-      preLoaderRoute: typeof DashboardAppointmentsRouteImport
+    '/_dashboard/cases': {
+      id: '/_dashboard/cases'
+      path: '/cases'
+      fullPath: '/cases'
+      preLoaderRoute: typeof DashboardCasesRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/_dashboard/dashboard': {
@@ -141,18 +130,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardDashboardRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/_dashboard/messages': {
-      id: '/_dashboard/messages'
-      path: '/messages'
-      fullPath: '/messages'
-      preLoaderRoute: typeof DashboardMessagesRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/_dashboard/reviews': {
-      id: '/_dashboard/reviews'
-      path: '/reviews'
-      fullPath: '/reviews'
-      preLoaderRoute: typeof DashboardReviewsRouteImport
+    '/_dashboard/reports': {
+      id: '/_dashboard/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof DashboardReportsRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/_dashboard/settings': {
@@ -162,23 +144,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/_dashboard/shifts': {
+      id: '/_dashboard/shifts'
+      path: '/shifts'
+      fullPath: '/shifts'
+      preLoaderRoute: typeof DashboardShiftsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
 interface DashboardRouteChildren {
-  DashboardAppointmentsRoute: typeof DashboardAppointmentsRoute
+  DashboardCasesRoute: typeof DashboardCasesRoute
   DashboardDashboardRoute: typeof DashboardDashboardRoute
-  DashboardMessagesRoute: typeof DashboardMessagesRoute
-  DashboardReviewsRoute: typeof DashboardReviewsRoute
+  DashboardReportsRoute: typeof DashboardReportsRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardShiftsRoute: typeof DashboardShiftsRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardAppointmentsRoute: DashboardAppointmentsRoute,
+  DashboardCasesRoute: DashboardCasesRoute,
   DashboardDashboardRoute: DashboardDashboardRoute,
-  DashboardMessagesRoute: DashboardMessagesRoute,
-  DashboardReviewsRoute: DashboardReviewsRoute,
+  DashboardReportsRoute: DashboardReportsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardShiftsRoute: DashboardShiftsRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
