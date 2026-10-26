@@ -1,5 +1,6 @@
 import { Bell, Search } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageToggle } from "@/components/language-toggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,24 +13,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useI18n } from "@/lib/i18n";
 
 export function AppHeader() {
+  const { t } = useI18n();
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b bg-card/80 px-4 backdrop-blur md:px-6">
       <SidebarTrigger />
       <div className="relative max-w-md flex-1">
         <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-        <Input placeholder="Search clients, appointments..." className="bg-muted pl-9 border-transparent" />
+        <Input placeholder={t.search} className="bg-muted pl-9 border-transparent" />
       </div>
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex items-center gap-1 sm:gap-2">
+        <LanguageToggle />
         <ThemeToggle />
-        <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
+        <Button variant="ghost" size="icon" className="relative" aria-label={t.notifications}>
           <Bell className="size-5" />
           <span className="absolute right-2 top-2 size-2 rounded-full bg-primary" />
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="Profile">
+            <button className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label={t.profile}>
               <Avatar className="size-9">
                 <AvatarFallback className="bg-accent text-accent-foreground font-semibold">AC</AvatarFallback>
               </Avatar>
@@ -38,14 +42,13 @@ export function AppHeader() {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
               <p className="font-medium">Ana Costa</p>
-              <p className="text-xs font-normal text-muted-foreground">ana@barbearia.com</p>
+              <p className="text-xs font-normal text-muted-foreground">ana@protege.gov.br</p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem>{t.profile}</DropdownMenuItem>
+            <DropdownMenuItem>{t.nav.settings}</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Log out</DropdownMenuItem>
+            <DropdownMenuItem>{t.logout}</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

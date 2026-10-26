@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, CalendarDays, MessageSquare, Star, Settings, Zap } from "lucide-react";
+import { LayoutDashboard, FolderLock, CalendarClock, FileText, Settings, ShieldCheck } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -11,36 +11,37 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
-const items = [
-  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Appointments", url: "/appointments", icon: CalendarDays },
-  { title: "Messages", url: "/messages", icon: MessageSquare },
-  { title: "Reviews", url: "/reviews", icon: Star },
-  { title: "Settings", url: "/settings", icon: Settings },
-] as const;
+import { useI18n } from "@/lib/i18n";
 
 export function AppSidebar() {
   const path = useRouterState({ select: (r) => r.location.pathname });
+  const { t } = useI18n();
+  const items = [
+    { title: t.nav.dashboard, url: "/dashboard", icon: LayoutDashboard },
+    { title: t.nav.cases, url: "/cases", icon: FolderLock },
+    { title: t.nav.shifts, url: "/shifts", icon: CalendarClock },
+    { title: t.nav.reports, url: "/reports", icon: FileText },
+    { title: t.nav.settings, url: "/settings", icon: Settings },
+  ] as const;
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <Link to="/" className="flex items-center gap-2 px-2 py-3">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-            <Zap className="size-4" />
+            <ShieldCheck className="size-4" />
           </div>
           <span className="truncate text-base font-semibold text-sidebar-accent-foreground group-data-[collapsible=icon]:hidden">
-            LocalPilot
+            Protege
           </span>
         </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+          <SidebarGroupLabel>{t.nav.workspace}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton asChild isActive={path === item.url} tooltip={item.title}>
                     <Link to={item.url}>
                       <item.icon />
