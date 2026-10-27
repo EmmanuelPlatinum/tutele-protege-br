@@ -3,7 +3,10 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export const languages = [
   { code: "pt", label: "Português (Brasil)", short: "PT" },
   { code: "en", label: "English (US)", short: "EN" },
-  { code: "es", label: "Español", short: "ES" },
+  { code: "fr", label: "Français", short: "FR" },
+  { code: "ja", label: "日本語", short: "JA" },
+  { code: "zh", label: "中文", short: "ZH" },
+  { code: "ko", label: "한국어", short: "KO" },
 ] as const;
 export type Lang = (typeof languages)[number]["code"];
 
@@ -89,16 +92,22 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("pt");
   useEffect(() => {
     const saved = localStorage.getItem("lang") as Lang | null;
-    if (saved && saved in dict) setLangState(saved);
+    if (saved && languages.some((l) => l.code === saved)) setLangState(saved);
   }, []);
   useEffect(() => {
-    document.documentElement.lang = lang === "pt" ? "pt-BR" : lang === "en" ? "en-US" : "es";
+    document.documentElement.lang = lang === "pt" ? "pt-BR" : lang === "en" ? "en-US" : lang;
   }, [lang]);
   const setLang = (l: Lang) => {
     setLangState(l);
     localStorage.setItem("lang", l);
   };
-  return <Ctx.Provider value={{ lang, setLang, t: dict[lang] as Dict }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ lang, setLang, t: (lang === "pt" ? dict.pt : dict.en) as Dict }}>{children}</Ctx.Provider>;
 }
 
 export const useI18n = () => useContext(Ctx);
+
+/** Picks Portuguese for "pt", English for every other language (dashboard strings). */
+export function useTx() {
+  const { lang } = useContext(Ctx);
+  return (pt: string, en: string) => (lang === "pt" ? pt : en);
+}
