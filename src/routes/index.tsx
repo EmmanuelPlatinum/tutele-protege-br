@@ -101,7 +101,7 @@ function Landing() {
       <section className="mx-auto max-w-6xl px-4 py-12 md:px-6">
         <div className="grid gap-6 md:grid-cols-3">
           {L.features.map(([title, text], i) => {
-            const Icon = featureIcons[i];
+            const Icon = featureIcons[i]!;
             return (
               <Card key={i} className="shadow-card">
                 <CardContent className="p-6">
