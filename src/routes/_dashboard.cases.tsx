@@ -1,61 +1,111 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Plus, Lock } from "lucide-react";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { useMemo, useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Lock, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PageHeader } from "@/components/app-header";
-import { useI18n } from "@/lib/i18n";
+import { NewCaseDialog } from "@/components/new-case-dialog";
+import { RiskBadge } from "@/components/risk-badge";
+import { useI18n, useTx } from "@/lib/i18n";
+import { sortByRisk, useCases } from "@/lib/cases-store";
 
 export const Route = createFileRoute("/_dashboard/cases")({
   head: () => ({
     meta: [
-      { title: "Casos — Protege" },
-      { name: "description", content: "Gestão de casos sigilosos do Conselho Tutelar." },
-      { property: "og:title", content: "Casos — Protege" },
-      { property: "og:description", content: "Gestão de casos sigilosos do Conselho Tutelar." },
+      { title: "Casos — Tutele Protege" },
+      { name: "description", content: "Triagem inteligente e gestão de casos sigilosos do Conselho Tutelar." },
+      { property: "og:title", content: "Casos — Tutele Protege" },
+      { property: "og:description", content: "Triagem inteligente e gestão de casos sigilosos do Conselho Tutelar." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Cases,
 });
 
-type S = "open" | "urgent" | "closed";
-const rows: { id: string; family: string; type: number; counselor: string; status: S }[] = [
-  { id: "#1042", family: "Silva", type: 0, counselor: "Ana Costa", status: "urgent" },
-  { id: "#1041", family: "Souza", type: 1, counselor: "Marcos Lima", status: "open" },
-  { id: "#1039", family: "Oliveira", type: 2, counselor: "Ana Costa", status: "urgent" },
-  { id: "#1038", family: "Pereira", type: 3, counselor: "Júlia Rocha", status: "open" },
-  { id: "#1035", family: "Santos", type: 4, counselor: "Marcos Lima", status: "closed" },
-];
 const variant = { open: "warning", urgent: "danger", closed: "success" } as const;
 
 function Cases() {
   const { t } = useI18n();
+  const tx = useTx();
+  const navigate = useNavigate();
+  const all = useCases();
+  const [q, setQ] = useState("");
+  const [status, setStatus] = useState("all");
+  const [risk, setRisk] = useState("all");
+  const [period, setPeriod] = useState("all");
+
+  const rows = useMemo(() => {
+    const now = new Date("2026-10-27").getTime();
+    const days = period === "all" ? Infinity : Number(period);
+    const term = q.toLowerCase();
+    return sortByRisk(all.filter((c) =>
+      (status === "all" || c.status === status) &&
+      (risk === "all" || c.risk === risk) &&
+      (now - new Date(c.date).getTime()) / 864e5 <= days &&
+      (!term || `${c.id} ${c.family} ${c.type} ${c.counselor}`.toLowerCase().includes(term)),
+    ));
+  }, [all, q, status, risk, period]);
+
   return (
     <>
-      <PageHeader title={t.cases.title} subtitle={t.cases.sub}
-        action={<Button size="lg" onClick={() => toast.success(t.cases.created)}><Plus /> {t.cases.new}</Button>} />
+      <PageHeader title={t.cases.title} subtitle={tx("Casos críticos ficam sempre no topo da lista.", "Critical cases always stay at the top.")} action={<NewCaseDialog />} />
+      <Card className="mb-4 grid gap-3 p-4 shadow-card sm:grid-cols-2 lg:grid-cols-[1fr_180px_180px_180px]">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={tx("Buscar por nº, família, tipo...", "Search by no., family, type...")} className="pl-9" />
+        </div>
+        <Select value={status} onValueChange={setStatus}><SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{tx("Todos os status", "All statuses")}</SelectItem>
+            <SelectItem value="urgent">{t.status.urgent}</SelectItem>
+            <SelectItem value="open">{t.status.open}</SelectItem>
+            <SelectItem value="closed">{t.status.closed}</SelectItem>
+          </SelectContent></Select>
+        <Select value={risk} onValueChange={setRisk}><SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{tx("Todos os riscos", "All risk levels")}</SelectItem>
+            <SelectItem value="critical">{tx("Crítico", "Critical")}</SelectItem>
+            <SelectItem value="high">{tx("Alto", "High")}</SelectItem>
+            <SelectItem value="routine">{tx("Rotina", "Routine")}</SelectItem>
+          </SelectContent></Select>
+        <Select value={period} onValueChange={setPeriod}><SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{tx("Qualquer data", "Any date")}</SelectItem>
+            <SelectItem value="7">{tx("Últimos 7 dias", "Last 7 days")}</SelectItem>
+            <SelectItem value="30">{tx("Últimos 30 dias", "Last 30 days")}</SelectItem>
+          </SelectContent></Select>
+      </Card>
       <Card className="overflow-hidden shadow-card">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>{t.cases.id}</TableHead><TableHead>{t.cases.family}</TableHead>
+              <TableHead>{tx("Risco", "Risk")}</TableHead>
               <TableHead className="hidden sm:table-cell">{t.cases.type}</TableHead>
               <TableHead className="hidden md:table-cell">{t.cases.counselor}</TableHead>
+              <TableHead className="hidden lg:table-cell">{tx("Data", "Date")}</TableHead>
               <TableHead>{t.cases.status}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {rows.map((r) => (
-              <TableRow key={r.id}>
-                <TableCell className="font-mono text-xs"><span className="inline-flex items-center gap-1"><Lock className="size-3 text-muted-foreground" />{r.id}</span></TableCell>
+              <TableRow key={r.id} className="cursor-pointer" onClick={() => navigate({ to: "/case/$caseId", params: { caseId: r.id } })}>
+                <TableCell className="font-mono text-xs"><span className="inline-flex items-center gap-1"><Lock className="size-3 text-muted-foreground" />#{r.id}</span></TableCell>
                 <TableCell className="font-medium">{t.cases.family} {r.family}</TableCell>
-                <TableCell className="hidden sm:table-cell text-muted-foreground">{t.caseTypes[r.type]}</TableCell>
+                <TableCell><RiskBadge risk={r.risk} /></TableCell>
+                <TableCell className="hidden sm:table-cell text-muted-foreground">{r.type}</TableCell>
                 <TableCell className="hidden md:table-cell text-muted-foreground">{r.counselor}</TableCell>
+                <TableCell className="hidden lg:table-cell text-muted-foreground">{r.date.split("-").reverse().join("/")}</TableCell>
                 <TableCell><Badge variant={variant[r.status]}>{t.status[r.status]}</Badge></TableCell>
               </TableRow>
             ))}
+            {rows.length === 0 && (
+              <TableRow><TableCell colSpan={7} className="py-10 text-center text-muted-foreground">{tx("Nenhum caso encontrado.", "No cases found.")}</TableCell></TableRow>
+            )}
           </TableBody>
         </Table>
       </Card>
