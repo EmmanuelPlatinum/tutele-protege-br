@@ -88,7 +88,7 @@ function Dashboard() {
           <CardContent>
             <ul className="space-y-4">
               {t.updateItems.map((text, i) => {
-                const Icon = icons[i];
+                const Icon = icons[i]!;
                 return (
                   <li key={i} className="flex gap-3">
                     <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"><Icon className="size-4" /></div>
