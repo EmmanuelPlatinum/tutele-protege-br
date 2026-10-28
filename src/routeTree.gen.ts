@@ -11,11 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/_dashboard'
+import { Route as DashboardAlertsRouteImport } from './routes/_dashboard.alerts'
 import { Route as DashboardCasesRouteImport } from './routes/_dashboard.cases'
 import { Route as DashboardDashboardRouteImport } from './routes/_dashboard.dashboard'
 import { Route as DashboardReportsRouteImport } from './routes/_dashboard.reports'
 import { Route as DashboardSettingsRouteImport } from './routes/_dashboard.settings'
 import { Route as DashboardShiftsRouteImport } from './routes/_dashboard.shifts'
+import { Route as DashboardCaseCaseIdRouteImport } from './routes/_dashboard.case.$caseId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -25,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/_dashboard',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardAlertsRoute = DashboardAlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardCasesRoute = DashboardCasesRouteImport.update({
   id: '/cases',
@@ -51,48 +58,76 @@ const DashboardShiftsRoute = DashboardShiftsRouteImport.update({
   path: '/shifts',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardCaseCaseIdRoute = DashboardCaseCaseIdRouteImport.update({
+  id: '/case/$caseId',
+  path: '/case/$caseId',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/alerts': typeof DashboardAlertsRoute
   '/cases': typeof DashboardCasesRoute
   '/dashboard': typeof DashboardDashboardRoute
   '/reports': typeof DashboardReportsRoute
   '/settings': typeof DashboardSettingsRoute
   '/shifts': typeof DashboardShiftsRoute
+  '/case/$caseId': typeof DashboardCaseCaseIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/alerts': typeof DashboardAlertsRoute
   '/cases': typeof DashboardCasesRoute
   '/dashboard': typeof DashboardDashboardRoute
   '/reports': typeof DashboardReportsRoute
   '/settings': typeof DashboardSettingsRoute
   '/shifts': typeof DashboardShiftsRoute
+  '/case/$caseId': typeof DashboardCaseCaseIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_dashboard': typeof DashboardRouteWithChildren
+  '/_dashboard/alerts': typeof DashboardAlertsRoute
   '/_dashboard/cases': typeof DashboardCasesRoute
   '/_dashboard/dashboard': typeof DashboardDashboardRoute
   '/_dashboard/reports': typeof DashboardReportsRoute
   '/_dashboard/settings': typeof DashboardSettingsRoute
   '/_dashboard/shifts': typeof DashboardShiftsRoute
+  '/_dashboard/case/$caseId': typeof DashboardCaseCaseIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/cases' | '/dashboard' | '/reports' | '/settings' | '/shifts'
+    | '/'
+    | '/alerts'
+    | '/cases'
+    | '/dashboard'
+    | '/reports'
+    | '/settings'
+    | '/shifts'
+    | '/case/$caseId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cases' | '/dashboard' | '/reports' | '/settings' | '/shifts'
+  to:
+    | '/'
+    | '/alerts'
+    | '/cases'
+    | '/dashboard'
+    | '/reports'
+    | '/settings'
+    | '/shifts'
+    | '/case/$caseId'
   id:
     | '__root__'
     | '/'
     | '/_dashboard'
+    | '/_dashboard/alerts'
     | '/_dashboard/cases'
     | '/_dashboard/dashboard'
     | '/_dashboard/reports'
     | '/_dashboard/settings'
     | '/_dashboard/shifts'
+    | '/_dashboard/case/$caseId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -115,6 +150,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/alerts': {
+      id: '/_dashboard/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof DashboardAlertsRouteImport
+      parentRoute: typeof DashboardRoute
     }
     '/_dashboard/cases': {
       id: '/_dashboard/cases'
@@ -151,23 +193,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardShiftsRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/_dashboard/case/$caseId': {
+      id: '/_dashboard/case/$caseId'
+      path: '/case/$caseId'
+      fullPath: '/case/$caseId'
+      preLoaderRoute: typeof DashboardCaseCaseIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
 interface DashboardRouteChildren {
+  DashboardAlertsRoute: typeof DashboardAlertsRoute
   DashboardCasesRoute: typeof DashboardCasesRoute
   DashboardDashboardRoute: typeof DashboardDashboardRoute
   DashboardReportsRoute: typeof DashboardReportsRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
   DashboardShiftsRoute: typeof DashboardShiftsRoute
+  DashboardCaseCaseIdRoute: typeof DashboardCaseCaseIdRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardAlertsRoute: DashboardAlertsRoute,
   DashboardCasesRoute: DashboardCasesRoute,
   DashboardDashboardRoute: DashboardDashboardRoute,
   DashboardReportsRoute: DashboardReportsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardShiftsRoute: DashboardShiftsRoute,
+  DashboardCaseCaseIdRoute: DashboardCaseCaseIdRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(

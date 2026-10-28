@@ -10,9 +10,9 @@ import { useI18n } from "@/lib/i18n";
 export const Route = createFileRoute("/_dashboard/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — Protege" },
+      { title: "Dashboard — Tutele Protege" },
       { name: "description", content: "Casos ativos, visitas pendentes e prazos de relatórios do Conselho Tutelar." },
-      { property: "og:title", content: "Dashboard — Protege" },
+      { property: "og:title", content: "Dashboard — Tutele Protege" },
       { property: "og:description", content: "Casos ativos, visitas pendentes e prazos de relatórios do Conselho Tutelar." },
     ],
   }),

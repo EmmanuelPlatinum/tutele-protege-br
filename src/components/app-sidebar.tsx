@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, FolderLock, CalendarClock, FileText, Settings, ShieldCheck } from "lucide-react";
+import { LayoutDashboard, FolderLock, CalendarClock, FileText, Settings, ShieldCheck, Radar } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -11,14 +11,16 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useI18n } from "@/lib/i18n";
+import { useI18n, useTx } from "@/lib/i18n";
 
 export function AppSidebar() {
   const path = useRouterState({ select: (r) => r.location.pathname });
   const { t } = useI18n();
+  const tx = useTx();
   const items = [
     { title: t.nav.dashboard, url: "/dashboard", icon: LayoutDashboard },
     { title: t.nav.cases, url: "/cases", icon: FolderLock },
+    { title: tx("Alertas Digitais (API)", "Digital API Alerts"), url: "/alerts", icon: Radar },
     { title: t.nav.shifts, url: "/shifts", icon: CalendarClock },
     { title: t.nav.reports, url: "/reports", icon: FileText },
     { title: t.nav.settings, url: "/settings", icon: Settings },
@@ -31,7 +33,7 @@ export function AppSidebar() {
             <ShieldCheck className="size-4" />
           </div>
           <span className="truncate text-base font-semibold text-sidebar-accent-foreground group-data-[collapsible=icon]:hidden">
-            Protege
+            Tutele Protege
           </span>
         </Link>
       </SidebarHeader>
@@ -42,7 +44,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={path === item.url} tooltip={item.title}>
+                  <SidebarMenuButton asChild isActive={path === item.url || (item.url === "/cases" && path.startsWith("/case/"))} tooltip={item.title}>
                     <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
