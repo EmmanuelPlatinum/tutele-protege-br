@@ -7,9 +7,9 @@ import { useI18n } from "@/lib/i18n";
 export const Route = createFileRoute("/_dashboard/settings")({
   head: () => ({
     meta: [
-      { title: "Configurações — Protege" },
+      { title: "Configurações — Tutele Protege" },
       { name: "description", content: "Configure automações e notificações do conselho." },
-      { property: "og:title", content: "Configurações — Protege" },
+      { property: "og:title", content: "Configurações — Tutele Protege" },
       { property: "og:description", content: "Configure automações e notificações do conselho." },
     ],
   }),
