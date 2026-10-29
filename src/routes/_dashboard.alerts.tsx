@@ -41,13 +41,13 @@ function Alerts() {
   const convert = (a: Alert) => {
     const c = addCase({ family: `Usuário ${a.platform}`, child: a.user.split(" · ")[0]!, age: Number(a.user.match(/(\d+) anos/)?.[1] ?? 0), type: "Risco cibernético", counselor: "Ana Costa", status: a.risk === "routine" ? "open" : "urgent", risk: a.risk, address: "—", description: `${a.platform}: ${a.detail}`, timelineNote: `Convertido do alerta ${a.id} (${a.platform} · ${a.event}).` });
     setConverted((p) => ({ ...p, [a.id]: c.id }));
-    toast.success(tx(`Caso #${c.id} aberto`, `Case #${c.id} opened`), { action: { label: tx("Abrir", "Open"), onClick: () => navigate({ to: "/case/$caseId", params: { caseId: c.id } }) } });
+    toast.success(tx(`Caso #${c.id} aberto`, `Case #${c.id} opened`, `Caso #${c.id} abierto`), { action: { label: tx("Abrir", "Open", "Abrir"), onClick: () => navigate({ to: "/case/$caseId", params: { caseId: c.id } }) } });
   };
 
   return (
     <>
-      <PageHeader title={tx("Alertas Digitais (API)", "Digital API Alerts")} subtitle={tx("Webhooks automáticos de plataformas parceiras sinalizando riscos online.", "Automated webhooks from partner platforms flagging online risks.")}
-        action={<Badge variant="success" className="gap-1.5 px-3 py-1"><span className="size-2 animate-pulse rounded-full bg-current" /> {tx("Webhook ativo", "Webhook live")}</Badge>} />
+      <PageHeader title={tx("Alertas Digitais (API)", "Digital API Alerts", "Alertas Digitales (API)")} subtitle={tx("Webhooks automáticos de plataformas parceiras sinalizando riscos online.", "Automated webhooks from partner platforms flagging online risks.", "Webhooks automáticos de plataformas asociadas que señalan riesgos en línea.")}
+        action={<Badge variant="success" className="gap-1.5 px-3 py-1"><span className="size-2 animate-pulse rounded-full bg-current" /> {tx("Webhook ativo", "Webhook live", "Webhook activo")}</Badge>} />
       <div className="space-y-3">
         {feed.map((a) => (
           <Card key={a.id} className={a.risk === "critical" ? "shadow-card border-destructive/40" : "shadow-card"}>
@@ -58,15 +58,15 @@ function Alerts() {
                   <span className="font-semibold">{a.platform}</span>
                   <code className="rounded bg-muted px-1.5 py-0.5 text-xs">{a.event}</code>
                   <RiskBadge risk={a.risk} />
-                  <span className="text-xs text-muted-foreground">{a.at} · {tx("confiança", "confidence")} {a.score}%</span>
+                  <span className="text-xs text-muted-foreground">{a.at} · {tx("confiança", "confidence", "confianza")} {a.score}%</span>
                 </div>
                 <p className="mt-1.5 text-sm">{a.detail}</p>
                 <p className="mt-1 text-xs text-muted-foreground">{a.user} · {a.id}</p>
               </div>
               {converted[a.id] ? (
-                <Button variant="outline" onClick={() => navigate({ to: "/case/$caseId", params: { caseId: converted[a.id]! } })}><Check /> {tx(`Caso #${converted[a.id]}`, `Case #${converted[a.id]}`)}</Button>
+                <Button variant="outline" onClick={() => navigate({ to: "/case/$caseId", params: { caseId: converted[a.id]! } })}><Check /> {tx(`Caso #${converted[a.id]}`, `Case #${converted[a.id]}`, `Caso #${converted[a.id]}`)}</Button>
               ) : (
-                <Button onClick={() => convert(a)}><FolderPlus /> {tx("Converter em Caso Ativo", "Convert to Active Case")}</Button>
+                <Button onClick={() => convert(a)}><FolderPlus /> {tx("Converter em Caso Ativo", "Convert to Active Case", "Convertir en Caso Activo")}</Button>
               )}
             </CardContent>
           </Card>

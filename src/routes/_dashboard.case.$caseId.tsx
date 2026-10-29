@@ -30,15 +30,15 @@ function CaseDetails() {
   const { t } = useI18n();
   const tx = useTx();
   const c = useCases().find((x) => x.id === caseId);
-  const back = <Button asChild variant="ghost" className="mb-4 -ml-3"><Link to="/cases"><ArrowLeft /> {tx("Voltar para casos", "Back to cases")}</Link></Button>;
-  if (!c) return <>{back}<p className="text-muted-foreground">{tx("Caso não encontrado.", "Case not found.")}</p></>;
+  const back = <Button asChild variant="ghost" className="mb-4 -ml-3"><Link to="/cases"><ArrowLeft /> {tx("Voltar para casos", "Back to cases", "Volver a los casos")}</Link></Button>;
+  if (!c) return <>{back}<p className="text-muted-foreground">{tx("Caso não encontrado.", "Case not found.", "Caso no encontrado.")}</p></>;
 
   return (
     <>
       {back}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="flex items-center gap-1 font-mono text-xs text-muted-foreground"><Lock className="size-3" /> {tx("Sigiloso", "Confidential")} · #{c.id}</p>
+          <p className="flex items-center gap-1 font-mono text-xs text-muted-foreground"><Lock className="size-3" /> {tx("Sigiloso", "Confidential", "Confidencial")} · #{c.id}</p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight">{t.cases.family} {c.family}</h1>
           <div className="mt-2 flex flex-wrap gap-2"><RiskBadge risk={c.risk} /><Badge variant={variant[c.status]}>{t.status[c.status]}</Badge><Badge variant="outline">{c.type}</Badge></div>
         </div>
@@ -46,16 +46,16 @@ function CaseDetails() {
       </div>
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="shadow-card">
-          <CardHeader><CardTitle>{tx("Dados do caso", "Case data")}</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{tx("Dados do caso", "Case data", "Datos del caso")}</CardTitle></CardHeader>
           <CardContent className="space-y-4 text-sm">
-            <Info icon={User} label={tx("Criança / adolescente", "Child / teen")} value={`${c.child} · ${c.age} ${tx("anos", "years")}`} />
-            <Info icon={MapPin} label={tx("Endereço", "Address")} value={c.address || "—"} />
+            <Info icon={User} label={tx("Criança / adolescente", "Child / teen", "Niño / adolescente")} value={`${c.child} · ${c.age} ${tx("anos", "years", "años")}`} />
+            <Info icon={MapPin} label={tx("Endereço", "Address", "Dirección")} value={c.address || "—"} />
             <Info icon={User} label={t.cases.counselor} value={c.counselor} />
-            <div><p className="text-xs text-muted-foreground">{tx("Relato", "Description")}</p><p className="mt-1">{c.description || "—"}</p></div>
+            <div><p className="text-xs text-muted-foreground">{tx("Relato", "Description", "Relato")}</p><p className="mt-1">{c.description || "—"}</p></div>
           </CardContent>
         </Card>
         <Card className="shadow-card lg:col-span-2">
-          <CardHeader><CardTitle>{tx("Histórico do caso", "Case timeline")}</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{tx("Histórico do caso", "Case timeline", "Historial del caso")}</CardTitle></CardHeader>
           <CardContent>
             <ol className="relative space-y-6 border-l pl-6">
               {[...c.timeline].reverse().map((e, i) => (
