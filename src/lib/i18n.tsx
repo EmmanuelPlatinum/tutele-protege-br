@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export const languages = [
   { code: "pt", label: "Português (Brasil)", short: "PT" },
   { code: "en", label: "English (US)", short: "EN" },
+  { code: "es", label: "Español", short: "ES" },
   { code: "fr", label: "Français", short: "FR" },
   { code: "ja", label: "日本語", short: "JA" },
   { code: "zh", label: "中文", short: "ZH" },
@@ -101,13 +102,14 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     setLangState(l);
     localStorage.setItem("lang", l);
   };
-  return <Ctx.Provider value={{ lang, setLang, t: (lang === "pt" ? dict.pt : dict.en) as Dict }}>{children}</Ctx.Provider>;
+  const t = (lang === "es" ? dict.es : lang === "pt" ? dict.pt : dict.en) as Dict;
+  return <Ctx.Provider value={{ lang, setLang, t }}>{children}</Ctx.Provider>;
 }
 
 export const useI18n = () => useContext(Ctx);
 
-/** Picks Portuguese for "pt", English for every other language (dashboard strings). */
+/** Picks Portuguese for "pt", Spanish when one is given, otherwise English (dashboard strings). */
 export function useTx() {
   const { lang } = useContext(Ctx);
-  return (pt: string, en: string) => (lang === "pt" ? pt : en);
+  return (pt: string, en: string, es?: string) => (lang === "pt" ? pt : lang === "es" ? (es ?? en) : en);
 }
