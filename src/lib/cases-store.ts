@@ -22,7 +22,7 @@ export const riskOrder: Record<Risk, number> = { critical: 0, high: 1, routine: 
 export const sortByRisk = (list: Case[]) =>
   [...list].sort((a, b) => riskOrder[a.risk] - riskOrder[b.risk] || b.date.localeCompare(a.date));
 
-let cases: Case[] = [
+const seed = (): Case[] => [
   { id: "1042", family: "Silva", child: "J. S.", age: 9, type: "Violência doméstica", counselor: "Ana Costa", status: "urgent", risk: "critical", date: "2026-10-26", address: "Rua das Flores, 120 — Centro", description: "Denúncia anônima de agressões frequentes relatadas por vizinhos.",
     timeline: [
       { date: "2026-10-24 09:12", title: "Denúncia recebida", note: "Denúncia anônima pelo portal Tutele (PIN #PROT-8921)." },
@@ -49,13 +49,57 @@ let cases: Case[] = [
     ] },
 ];
 
+const KEY = "tutele_cases";
+const ALERTS_KEY = "tutele_alerts_converted";
+const initial = seed();
+let cases: Case[] = initial;
+let converted: Record<string, string> = {};
+let loaded = false;
+
+function load() {
+  if (loaded || typeof window === "undefined") return;
+  loaded = true;
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) cases = JSON.parse(raw);
+    const a = localStorage.getItem(ALERTS_KEY);
+    if (a) converted = JSON.parse(a);
+  } catch { /* ignore */ }
+}
+function save() {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(cases));
+    localStorage.setItem(ALERTS_KEY, JSON.stringify(converted));
+  } catch { /* ignore */ }
+}
+
 const listeners = new Set<() => void>();
-const emit = () => listeners.forEach((l) => l());
-const subscribe = (l: () => void) => (listeners.add(l), () => listeners.delete(l));
+const emit = () => { save(); listeners.forEach((l) => l()); };
+const subscribe = (l: () => void) => {
+  listeners.add(l);
+  if (!loaded) { load(); queueMicrotask(() => listeners.forEach((x) => x())); }
+  return () => { listeners.delete(l); };
+};
 const getSnapshot = () => cases;
+const getServerSnapshot = () => initial;
+const getConverted = () => converted;
+const emptyConv: Record<string, string> = {};
+
+export function useConvertedAlerts() {
+  return useSyncExternalStore(subscribe, getConverted, () => emptyConv);
+}
+export function markAlertConverted(alertId: string, caseId: string) {
+  converted = { ...converted, [alertId]: caseId };
+  emit();
+}
+export function resetDemoData() {
+  cases = seed();
+  converted = {};
+  emit();
+}
 
 export function useCases() {
-  return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
 export function addCase(data: Omit<Case, "id" | "timeline" | "date"> & { timelineNote?: string }) {
