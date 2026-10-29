@@ -59,7 +59,7 @@ function ReportForm() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (desc.trim().length < 5) return toast.error(L.required);
+    if (desc.trim().length < 5) { toast.error(L.required); return; }
     setPin(`#PROT-${Math.floor(1000 + Math.random() * 9000)}`);
     setPlace(""); setDesc(""); setType("0");
   };
