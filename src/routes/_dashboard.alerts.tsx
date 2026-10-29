@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Bot, Check, FolderPlus, Webhook } from "lucide-react";
 import { toast } from "sonner";
@@ -7,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/app-header";
 import { RiskBadge } from "@/components/risk-badge";
-import { addCase, type Risk } from "@/lib/cases-store";
+import { addCase, markAlertConverted, useConvertedAlerts, type Risk } from "@/lib/cases-store";
 import { useTx } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_dashboard/alerts")({
@@ -36,11 +35,11 @@ const feed: Alert[] = [
 function Alerts() {
   const tx = useTx();
   const navigate = useNavigate();
-  const [converted, setConverted] = useState<Record<string, string>>({});
+  const converted = useConvertedAlerts();
 
   const convert = (a: Alert) => {
     const c = addCase({ family: `Usuário ${a.platform}`, child: a.user.split(" · ")[0]!, age: Number(a.user.match(/(\d+) anos/)?.[1] ?? 0), type: "Risco cibernético", counselor: "Ana Costa", status: a.risk === "routine" ? "open" : "urgent", risk: a.risk, address: "—", description: `${a.platform}: ${a.detail}`, timelineNote: `Convertido do alerta ${a.id} (${a.platform} · ${a.event}).` });
-    setConverted((p) => ({ ...p, [a.id]: c.id }));
+    markAlertConverted(a.id, c.id);
     toast.success(tx(`Caso #${c.id} aberto`, `Case #${c.id} opened`, `Caso #${c.id} abierto`), { action: { label: tx("Abrir", "Open", "Abrir"), onClick: () => navigate({ to: "/case/$caseId", params: { caseId: c.id } }) } });
   };
 
