@@ -24,11 +24,11 @@ export function NewCaseDialog() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!f.family.trim() || !f.child.trim()) {
-      toast.error(tx("Preencha família e criança.", "Fill in family and child."));
+      toast.error(tx("Preencha família e criança.", "Fill in family and child.", "Completa familia y niño."));
       return;
     }
     const c = addCase({ family: f.family.trim(), child: f.child.trim(), age: Number(f.age) || 0, address: f.address, type: f.type, counselor: f.counselor, risk: f.risk, status: f.risk === "routine" ? "open" : "urgent", description: f.description });
-    toast.success(tx(`Caso #${c.id} criado`, `Case #${c.id} created`));
+    toast.success(tx(`Caso #${c.id} criado`, `Case #${c.id} created`, `Caso #${c.id} creado`));
     setOpen(false);
     navigate({ to: "/case/$caseId", params: { caseId: c.id } });
   };
@@ -36,38 +36,38 @@ export function NewCaseDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="lg"><Plus /> {tx("Novo Caso", "New Case")}</Button>
+        <Button size="lg"><Plus /> {tx("Novo Caso", "New Case", "Nuevo Caso")}</Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{tx("Cadastrar novo caso", "Register new case")}</DialogTitle>
-          <DialogDescription>{tx("Dados sigilosos — acesso restrito ao conselho.", "Confidential data — council access only.")}</DialogDescription>
+          <DialogTitle>{tx("Cadastrar novo caso", "Register new case", "Registrar nuevo caso")}</DialogTitle>
+          <DialogDescription>{tx("Dados sigilosos — acesso restrito ao conselho.", "Confidential data — council access only.", "Datos confidenciales — acceso restringido al consejo.")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} className="grid gap-4 sm:grid-cols-2">
-          <Field label={tx("Família (sobrenome)", "Family (surname)")}><Input value={f.family} onChange={(e) => set("family")(e.target.value)} /></Field>
-          <Field label={tx("Criança / adolescente (iniciais)", "Child / teen (initials)")}><Input value={f.child} onChange={(e) => set("child")(e.target.value)} placeholder="J. S." /></Field>
-          <Field label={tx("Idade", "Age")}><Input type="number" min={0} max={17} value={f.age} onChange={(e) => set("age")(e.target.value)} /></Field>
-          <Field label={tx("Endereço", "Address")}><Input value={f.address} onChange={(e) => set("address")(e.target.value)} /></Field>
-          <Field label={tx("Tipo de violação", "Violation type")}>
+          <Field label={tx("Família (sobrenome)", "Family (surname)", "Familia (apellido)")}><Input value={f.family} onChange={(e) => set("family")(e.target.value)} /></Field>
+          <Field label={tx("Criança / adolescente (iniciais)", "Child / teen (initials)", "Niño / adolescente (iniciales)")}><Input value={f.child} onChange={(e) => set("child")(e.target.value)} placeholder="J. S." /></Field>
+          <Field label={tx("Idade", "Age", "Edad")}><Input type="number" min={0} max={17} value={f.age} onChange={(e) => set("age")(e.target.value)} /></Field>
+          <Field label={tx("Endereço", "Address", "Dirección")}><Input value={f.address} onChange={(e) => set("address")(e.target.value)} /></Field>
+          <Field label={tx("Tipo de violação", "Violation type", "Tipo de violación")}>
             <Select value={f.type} onValueChange={set("type")}><SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>{types.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent></Select>
           </Field>
-          <Field label={tx("Conselheiro(a) responsável", "Assigned counselor")}>
+          <Field label={tx("Conselheiro(a) responsável", "Assigned counselor", "Consejero(a) responsable")}>
             <Select value={f.counselor} onValueChange={set("counselor")}><SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>{counselors.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent></Select>
           </Field>
-          <Field label={tx("Nível de risco", "Risk level")}>
+          <Field label={tx("Nível de risco", "Risk level", "Nivel de riesgo")}>
             <Select value={f.risk} onValueChange={set("risk")}><SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="critical">{tx("Crítico", "Critical")}</SelectItem>
-                <SelectItem value="high">{tx("Alto", "High")}</SelectItem>
-                <SelectItem value="routine">{tx("Rotina", "Routine")}</SelectItem>
+                <SelectItem value="critical">{tx("Crítico", "Critical", "Crítico")}</SelectItem>
+                <SelectItem value="high">{tx("Alto", "High", "Alto")}</SelectItem>
+                <SelectItem value="routine">{tx("Rotina", "Routine", "Rutina")}</SelectItem>
               </SelectContent></Select>
           </Field>
-          <div className="sm:col-span-2"><Field label={tx("Relato", "Description")}><Textarea rows={4} value={f.description} onChange={(e) => set("description")(e.target.value)} /></Field></div>
+          <div className="sm:col-span-2"><Field label={tx("Relato", "Description", "Relato")}><Textarea rows={4} value={f.description} onChange={(e) => set("description")(e.target.value)} /></Field></div>
           <DialogFooter className="sm:col-span-2">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>{tx("Cancelar", "Cancel")}</Button>
-            <Button type="submit">{tx("Salvar caso", "Save case")}</Button>
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>{tx("Cancelar", "Cancel", "Cancelar")}</Button>
+            <Button type="submit">{tx("Salvar caso", "Save case", "Guardar caso")}</Button>
           </DialogFooter>
         </form>
       </DialogContent>

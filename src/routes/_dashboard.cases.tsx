@@ -52,31 +52,31 @@ function Cases() {
 
   return (
     <>
-      <PageHeader title={t.cases.title} subtitle={tx("Casos críticos ficam sempre no topo da lista.", "Critical cases always stay at the top.")} action={<NewCaseDialog />} />
+      <PageHeader title={t.cases.title} subtitle={tx("Casos críticos ficam sempre no topo da lista.", "Critical cases always stay at the top.", "Los casos críticos siempre permanecen al inicio de la lista.")} action={<NewCaseDialog />} />
       <Card className="mb-4 grid gap-3 p-4 shadow-card sm:grid-cols-2 lg:grid-cols-[1fr_180px_180px_180px]">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={tx("Buscar por nº, família, tipo...", "Search by no., family, type...")} className="pl-9" />
+          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={tx("Buscar por nº, família, tipo...", "Search by no., family, type...", "Buscar por n.º, familia, tipo...")} className="pl-9" />
         </div>
         <Select value={status} onValueChange={setStatus}><SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{tx("Todos os status", "All statuses")}</SelectItem>
+            <SelectItem value="all">{tx("Todos os status", "All statuses", "Todos los estados")}</SelectItem>
             <SelectItem value="urgent">{t.status.urgent}</SelectItem>
             <SelectItem value="open">{t.status.open}</SelectItem>
             <SelectItem value="closed">{t.status.closed}</SelectItem>
           </SelectContent></Select>
         <Select value={risk} onValueChange={setRisk}><SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{tx("Todos os riscos", "All risk levels")}</SelectItem>
-            <SelectItem value="critical">{tx("Crítico", "Critical")}</SelectItem>
-            <SelectItem value="high">{tx("Alto", "High")}</SelectItem>
-            <SelectItem value="routine">{tx("Rotina", "Routine")}</SelectItem>
+            <SelectItem value="all">{tx("Todos os riscos", "All risk levels", "Todos los niveles de riesgo")}</SelectItem>
+            <SelectItem value="critical">{tx("Crítico", "Critical", "Crítico")}</SelectItem>
+            <SelectItem value="high">{tx("Alto", "High", "Alto")}</SelectItem>
+            <SelectItem value="routine">{tx("Rotina", "Routine", "Rutina")}</SelectItem>
           </SelectContent></Select>
         <Select value={period} onValueChange={setPeriod}><SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{tx("Qualquer data", "Any date")}</SelectItem>
-            <SelectItem value="7">{tx("Últimos 7 dias", "Last 7 days")}</SelectItem>
-            <SelectItem value="30">{tx("Últimos 30 dias", "Last 30 days")}</SelectItem>
+            <SelectItem value="all">{tx("Qualquer data", "Any date", "Cualquier fecha")}</SelectItem>
+            <SelectItem value="7">{tx("Últimos 7 dias", "Last 7 days", "Últimos 7 días")}</SelectItem>
+            <SelectItem value="30">{tx("Últimos 30 dias", "Last 30 days", "Últimos 30 días")}</SelectItem>
           </SelectContent></Select>
       </Card>
       <Card className="overflow-hidden shadow-card">
@@ -84,10 +84,10 @@ function Cases() {
           <TableHeader>
             <TableRow>
               <TableHead>{t.cases.id}</TableHead><TableHead>{t.cases.family}</TableHead>
-              <TableHead>{tx("Risco", "Risk")}</TableHead>
+              <TableHead>{tx("Risco", "Risk", "Riesgo")}</TableHead>
               <TableHead className="hidden sm:table-cell">{t.cases.type}</TableHead>
               <TableHead className="hidden md:table-cell">{t.cases.counselor}</TableHead>
-              <TableHead className="hidden lg:table-cell">{tx("Data", "Date")}</TableHead>
+              <TableHead className="hidden lg:table-cell">{tx("Data", "Date", "Fecha")}</TableHead>
               <TableHead>{t.cases.status}</TableHead>
             </TableRow>
           </TableHeader>
@@ -104,7 +104,7 @@ function Cases() {
               </TableRow>
             ))}
             {rows.length === 0 && (
-              <TableRow><TableCell colSpan={7} className="py-10 text-center text-muted-foreground">{tx("Nenhum caso encontrado.", "No cases found.")}</TableCell></TableRow>
+              <TableRow><TableCell colSpan={7} className="py-10 text-center text-muted-foreground">{tx("Nenhum caso encontrado.", "No cases found.", "No se encontraron casos.")}</TableCell></TableRow>
             )}
           </TableBody>
         </Table>

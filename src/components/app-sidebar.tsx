@@ -20,7 +20,7 @@ export function AppSidebar() {
   const items = [
     { title: t.nav.dashboard, url: "/dashboard", icon: LayoutDashboard },
     { title: t.nav.cases, url: "/cases", icon: FolderLock },
-    { title: tx("Alertas Digitais (API)", "Digital API Alerts"), url: "/alerts", icon: Radar },
+    { title: tx("Alertas Digitais (API)", "Digital API Alerts", "Alertas Digitales (API)"), url: "/alerts", icon: Radar },
     { title: t.nav.shifts, url: "/shifts", icon: CalendarClock },
     { title: t.nav.reports, url: "/reports", icon: FileText },
     { title: t.nav.settings, url: "/settings", icon: Settings },

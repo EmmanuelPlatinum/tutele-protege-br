@@ -22,18 +22,18 @@ export function DocumentGenerator({ c }: { c: Case }) {
   const finish = (how: "print" | "email") => {
     addTimeline(c.id, `Ofício ${num} gerado`, `Destinatário: ${tpl!.name} (${how === "print" ? "impresso" : "enviado por e-mail"}).`);
     if (how === "print") window.print();
-    toast.success(how === "print" ? tx("Ofício enviado para impressão", "Document sent to print") : tx("Ofício enviado por e-mail", "Document emailed"));
+    toast.success(how === "print" ? tx("Ofício enviado para impressão", "Document sent to print", "Oficio enviado para impresión") : tx("Ofício enviado por e-mail", "Document emailed", "Oficio enviado por correo electrónico"));
     setOpen(false);
     setTpl(null);
   };
 
   return (
     <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) setTpl(null); }}>
-      <DialogTrigger asChild><Button size="lg"><FileSignature /> Gerar Ofício</Button></DialogTrigger>
+      <DialogTrigger asChild><Button size="lg"><FileSignature /> {tx("Gerar Ofício", "Generate Letter", "Generar Oficio")}</Button></DialogTrigger>
       <DialogContent className="max-h-[92vh] overflow-y-auto sm:max-w-3xl">
         <DialogHeader>
-          <DialogTitle>{tpl ? tx("Pré-visualização do ofício", "Document preview") : tx("Escolha o modelo", "Choose a template")}</DialogTitle>
-          <DialogDescription>{tx(`Caso #${c.id} — Família ${c.family}`, `Case #${c.id} — ${c.family} Family`)}</DialogDescription>
+          <DialogTitle>{tpl ? tx("Pré-visualização do ofício", "Document preview", "Vista previa del oficio") : tx("Escolha o modelo", "Choose a template", "Elige el modelo")}</DialogTitle>
+          <DialogDescription>{tx(`Caso #${c.id} — Família ${c.family}`, `Case #${c.id} — ${c.family} Family`, `Caso #${c.id} — Familia ${c.family}`)}</DialogDescription>
         </DialogHeader>
         {!tpl ? (
           <div className="grid gap-3 sm:grid-cols-3">
@@ -41,7 +41,7 @@ export function DocumentGenerator({ c }: { c: Case }) {
               <button key={t.key} onClick={() => setTpl(t)} className="rounded-xl border bg-card p-5 text-left transition hover:border-primary hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                 <div className="flex size-10 items-center justify-center rounded-lg bg-accent text-accent-foreground"><t.icon className="size-5" /></div>
                 <p className="mt-4 font-semibold">{t.name}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{tx("Modelo oficial conforme o ECA", "Official ECA template")}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{tx("Modelo oficial conforme o ECA", "Official ECA template", "Modelo oficial según el ECA")}</p>
               </button>
             ))}
           </div>
@@ -68,10 +68,10 @@ export function DocumentGenerator({ c }: { c: Case }) {
               </article>
             </div>
             <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-between">
-              <Button variant="ghost" onClick={() => setTpl(null)}><ArrowLeft /> {tx("Trocar modelo", "Change template")}</Button>
+              <Button variant="ghost" onClick={() => setTpl(null)}><ArrowLeft /> {tx("Trocar modelo", "Change template", "Cambiar modelo")}</Button>
               <div className="flex gap-2">
-                <Button variant="outline" onClick={() => finish("email")}><Mail /> {tx("Enviar por e-mail", "Email")}</Button>
-                <Button onClick={() => finish("print")}><Printer /> {tx("Imprimir", "Print")}</Button>
+                <Button variant="outline" onClick={() => finish("email")}><Mail /> {tx("Enviar por e-mail", "Email", "Enviar por correo electrónico")}</Button>
+                <Button onClick={() => finish("print")}><Printer /> {tx("Imprimir", "Print", "Imprimir")}</Button>
               </div>
             </div>
           </>
